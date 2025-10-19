@@ -150,8 +150,8 @@ def parse_args():
     parser.add_argument(
         "--threads",
         type=int,
-        default=16,
-        help="Number of threads for robocopy (/MT option). Default: 16",
+        default=8,
+        help="Number of threads for robocopy (/MT option). Default: 8",
     )
     parser.add_argument(
         "--parallel",
