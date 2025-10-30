@@ -58,6 +58,7 @@ def get_unc_share_name(path: str | Path) -> str:
     # For a UNC path like '//PC-NAME/Folder/file', path.drive is '\\PC-NAME\Folder'
     return Path(path).drive.split(os.sep)[-1]
 
+
 def smart_leaf_name(path: Path) -> str:
     """Return the last path component; if empty (UNC share root), fall back to share name."""
     return path.name if path.name else get_unc_share_name(path)
@@ -216,7 +217,13 @@ def copy_folder(
     ]
 
     process = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, text=True
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        bufsize=1,
+        text=True,
+        encoding="utf-8",
+        errors="ignore",
     )
 
     current_file_size = 0
@@ -255,10 +262,12 @@ def copy_folder(
 
 class HideOnCompleteSpeedColumn(TransferSpeedColumn):
     """A TransferSpeedColumn that hides itself when the task is finished."""
+
     def render(self, task) -> Text:
         if task.finished:
             return Text("")  # hide when complete
         return super().render(task)
+
 
 def main():
     args = parse_args()
